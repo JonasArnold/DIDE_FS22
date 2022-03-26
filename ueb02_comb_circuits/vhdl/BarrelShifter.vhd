@@ -11,9 +11,27 @@ entity BarrelShifter is
 end BarrelShifter;
 
 architecture rtl of BarrelShifter is
- 
 begin
 
+    P_abs: process(dataIn, shift)
+        variable v_shift : integer range 0 to + 2**(shift'length-1)-1;  -- range -7 to 
+
+    begin
+        v_shift := abs(to_integer(signed(shift)));
+        
+        -- default assignment (only planned in event queue)
+        -- if nothing else is written to dataOut => it will be set to 0000000
+        dataOut <= (others => '0');  
+        
+        -- setting dataOut to the shifted dataIn value
+        if signed(shift) < 0 then  -- shift right
+           dataOut(7-v_shift downto 0) <= dataIn(7 downto v_shift);
+        else  -- shift left
+           dataOut(7 downto v_shift) <= dataIn(7-v_shift downto 0);
+        end if;
+        
+    end process P_abs;
+    
 end rtl;
 
 
