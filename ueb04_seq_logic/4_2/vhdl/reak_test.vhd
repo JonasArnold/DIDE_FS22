@@ -82,11 +82,19 @@ begin
       
       -- ToDo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       -- stop button pressed
-      if stop_pi = '1' and meas_done = '0' then
+      if stop_pi = '1' then
         meas_done <= '1';
-        meas_time <= tick_cnt * 10;
-      else  -- measurement ongoing
-        tick_cnt <= tick_cnt + 10; -- ?? ok
+      end if; 
+      -- measurement time
+      if delay_done = '1' and meas_done = '0' then
+        if tick_cnt < c_tick_time then  -- measurement ongoing
+          tick_cnt <= tick_cnt + 1;
+        else  -- measurement done
+          tick_cnt <= (others => '0');
+          if meas_time < 2**(meas_time'left+1)-1 then
+            meas_time <= meas_time + 1;
+          end if;
+        end if;
       end if;
       
     end if;
