@@ -136,13 +136,80 @@ begin
   -- States : s_del_1s, s_del_rand, s_measure, s_done, s_cheat, s_timeout
   -----------------------------------------------------------------------------
   -- memoryless process
-
-  -- ToDo!!!!!!!!!!!!!!!!!!!!!!!!!
+  P_MemoryLess: process (c_st, cnt_done, stop_pi, time_out)
+  begin
+    -- default assignments
+    n_st <= c_st;  -- remain in current state
+    meas_done <= '0';
+    start_rand <= '0';
+    start_meas <= '0';
+    start_blink <= '0';
+    
+    -- specific assignments
+    case c_st is
+      when s_del_1s =>
+        -- prio 2: random time start
+        if cnt_done = '1' and not stop_pi = '1' then
+          start_rand <= '1';
+          n_st <= s_del_rand;
+        -- prio 1: cheated
+        elsif stop_pi = '1' then
+          start_blink <= '1';
+          n_st <= s_cheat;
+        end if;
+        
+      when s_del_rand =>
+         -- prio 2: measurement start
+        if cnt_done = '1' and not stop_pi = '1' then
+          start_meas <= '1';
+          n_st <= s_measure;
+        -- prio 1: cheated
+        elsif stop_pi = '1' then
+          start_blink <= '1';
+          n_st <= s_cheat;
+        end if;
+        
+      when s_measure =>
+        -- prio 2: timeout
+        if time_out = '1' and not stop_pi = '1' then
+          meas_done <= '1';
+          n_st <= s_timeout;
+        -- prio 1: done
+        elsif stop_pi = '1' then
+          meas_done <= '1';
+          n_st <= s_done;
+        end if;
+        
+      when s_cheat => 
+        if cnt_done = '1' then
+          start_blink <= '1';
+        end if;
+        
+      when s_done =>
+        -- wait for reset after normal measurement
+        null;
+        
+      when s_timeout =>
+        -- wait for reset after timeout
+        null;
+        
+      when others =>
+        n_st <= s_cheat; -- handle parasitic state
+    end case;
+  end process;
+  
   
   ----------------------------------------------------------------------------- 
   -- sequential process
-
-  -- ToDo!!!!!!!!!!!!!!!!!!!!!!!!!
-
-  
+  p_seq: process (rst_pi, clk_pi)
+  begin
+    -- reset state when reset button is pressed
+    if rst_pi = '1' then
+      c_st <= s_del_1s;
+    -- update state on rising edge
+    elsif rising_edge(clk_pi) then
+      c_st <= n_st;   
+    end if;
+  end process;
+ 
 end rtl;
