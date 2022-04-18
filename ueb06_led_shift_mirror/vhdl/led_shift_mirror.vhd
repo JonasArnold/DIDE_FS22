@@ -37,7 +37,16 @@ architecture rtl of led_shift_mirror is
   signal mirr_evt : std_logic;  
   
 begin
-
+  -- entity to synchronized reset
+  rst: entity work.rst_sync port map(rst_pi => rst_pi, clk_pi => clk_pi, rst_po => rst_loc);
+  -- entity to decode encoder signals
+  evt_dec: entity work.evt_decoder port map(    rst_pi => rst_loc, clk_pi => clk_pi, 
+                                                enca_deb_pi => enca_deb, encb_deb_pi => encb_deb, butt_deb_pi => butt_deb,
+                                                left_evt_po => left_evt, rght_evt_po => rght_evt, mirr_evt_po => mirr_evt);
+  -- entity to display on leds
+  display: entity work.led_display port map(    rst_pi => rst_loc, clk_pi => clk_pi, 
+                                                left_evt_pi => left_evt, rght_evt_pi => rght_evt, mirr_evt_pi => mirr_evt,
+                                                led_po => led_po);
 end rtl;
 
 

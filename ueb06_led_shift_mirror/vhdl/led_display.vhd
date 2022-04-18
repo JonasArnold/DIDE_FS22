@@ -27,6 +27,7 @@ architecture rtl of led_display is
 
 begin
 
+    
 end rtl;
 
 
