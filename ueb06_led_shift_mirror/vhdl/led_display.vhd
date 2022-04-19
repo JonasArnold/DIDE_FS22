@@ -25,8 +25,56 @@ end led_display;
 
 architecture rtl of led_display is
 
+    signal shift : integer := 0;  -- shift value 
+
+    constant c_pattern : std_logic_vector(7 downto 0) := "00111100";
+
+
 begin
 
+    -- synchronized process to handle events
+    p_seq: process(rst_pi, clk_pi)
+    begin
+        -- reset
+        if rst_pi = '1' then
+            shift <= 0;
+        -- clock edge
+        elsif rising_edge(clk_pi) then
+            -- check if shifted, limit range
+            if left_evt_pi = '1' and shift <= (c_pattern'length/2)+1 then
+                shift <= shift + 1;
+            elsif rght_evt_pi = '1' and shift >= -((c_pattern'length/2)+1) then
+                shift <= shift - 1;
+            end if;
+            
+            -- invert number if mirrored
+            if mirr_evt_pi = '1' then
+                shift <= -shift;
+            end if;
+        end if;
+    
+    end process;
+
+    -- comb process to set leds
+    p_led: process(shift)
+        variable v_shift : integer range 0 to + 2**(c_pattern'length-1)-1;  -- range -7 to 7
+
+    begin
+        v_shift := abs(shift);
+
+        -- default assignment (only planned in event queue)
+        -- if nothing else is written to dataOut => it will be set to default pattern
+        led_po <= "00000000";  
+
+            
+        -- setting led_po to the shifted pattern
+        if shift < 0 then  -- shift right
+           led_po(7-v_shift downto 0) <= c_pattern(7 downto v_shift);
+        else  -- shift left
+           led_po(7 downto v_shift) <= c_pattern(7-v_shift downto 0);
+        end if;
+        
+    end process;
     
 end rtl;
 
