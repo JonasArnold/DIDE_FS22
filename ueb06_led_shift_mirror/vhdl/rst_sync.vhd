@@ -26,13 +26,14 @@ begin
     --- memorizing process for synchronization 
     process (rst_pi, clk_pi)
     begin
-      -- default: set synchronized reset output
-      rst_po <= sync(3);
-    
       -- always take rst_pi if it is '1'
       if rst_pi = '1' then
         sync <= "1111";
       elsif rising_edge(clk_pi) then
+        -- default: set synchronized reset output
+        rst_po <= sync(3);
+        
+        -- synchronize reset
         sync(0) <= rst_pi;
         sync(1) <= sync(0);
         sync(2) <= sync(1);

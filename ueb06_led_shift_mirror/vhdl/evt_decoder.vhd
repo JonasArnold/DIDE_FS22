@@ -25,7 +25,7 @@ end evt_decoder;
 
 architecture rtl of evt_decoder is
 
-    signal lst_btn_sync : std_logic;   -- storage for last button state
+    signal lst_btn_state : std_logic;   -- storage for last button state
     
     -- state machine
     type state is (S_rst, S_00, S_01, S_10, S_11);
@@ -73,22 +73,21 @@ begin
     -- memorizing process MEALY FSM
     p_seq: process (rst_pi, clk_pi)
     begin
-        -- default assignments
-        mirr_evt_po <= '0';
-        
         if rst_pi = '1' then
             c_st <= S_rst;
-            lst_btn_sync <= '1';
+            lst_btn_state <= '1';
+            mirr_evt_po <= '0';
+            
         elsif rising_edge(clk_pi) then
+            -- default assignments
             c_st <= n_st;
-            -- check if the button state has changed
-            if lst_btn_sync = not butt_deb_pi then
-                lst_btn_sync <= butt_deb_pi;
-                -- button was pressed
-                if butt_deb_pi = '0' then
-                    mirr_evt_po <= '1';
-                end if;
+            mirr_evt_po <= '0';
+
+            -- check if the button was pressed
+            if lst_btn_state = '1' and butt_deb_pi = '0' then
+                mirr_evt_po <= '1';
             end if;
+            lst_btn_state <= butt_deb_pi;  -- store last button state
         end if;
     end process;
     

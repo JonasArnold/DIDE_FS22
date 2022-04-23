@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="86700001fs"></ZoomEndTime>
-      <Cursor1Time time="46700000fs"></Cursor1Time>
+      <ZoomStartTime time="185006924208fs"></ZoomStartTime>
+      <ZoomEndTime time="185442924209fs"></ZoomEndTime>
+      <Cursor1Time time="185056424208fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="254"></NameColumnWidth>
-      <ValueColumnWidth column_width="192"></ValueColumnWidth>
+      <ValueColumnWidth column_width="187"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="18" />
+   <WVObjectSize size="22" />
    <wave_markers>
       <marker time="1600188000000000" label="" />
       <marker time="13600000" label="" />
@@ -104,5 +104,21 @@
       <obj_property name="label">LED Display Signals</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="BkColor">#DCDCDC</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_led_shift_mirror/mut/evt_dec/mirrorEvent" type="logic">
+      <obj_property name="ElementShortName">mirrorEvent</obj_property>
+      <obj_property name="ObjectShortName">mirrorEvent</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_led_shift_mirror/mut/evt_dec/lst_btn_state" type="logic">
+      <obj_property name="ElementShortName">lst_btn_state</obj_property>
+      <obj_property name="ObjectShortName">lst_btn_state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_led_shift_mirror/mut/evt_dec/mirr_evt_po" type="logic">
+      <obj_property name="ElementShortName">mirr_evt_po</obj_property>
+      <obj_property name="ObjectShortName">mirr_evt_po</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_led_shift_mirror/mut/evt_dec/butt_deb_pi" type="logic">
+      <obj_property name="ElementShortName">butt_deb_pi</obj_property>
+      <obj_property name="ObjectShortName">butt_deb_pi</obj_property>
    </wvobject>
 </wave_config>

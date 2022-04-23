@@ -36,9 +36,10 @@ begin
         -- reset
         if rst_pi = '1' then
             shift <= 0;
+            led_po <= c_pattern;  -- default pattern
+            
         -- clock edge
         elsif rising_edge(clk_pi) then
-            
             -- default assignment (only planned in event queue)
             led_po <= "00000000";
         
