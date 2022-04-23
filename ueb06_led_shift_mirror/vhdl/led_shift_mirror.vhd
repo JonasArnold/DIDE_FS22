@@ -37,13 +37,16 @@ architecture rtl of led_shift_mirror is
   signal mirr_evt : std_logic;  
   
 begin
-  --- entity to synchronize inputs
-  enca_deb_enty: entity work.sync_deb port map(rst_pi => rst_pi, clk_pi => clk_pi, async_pi => enca_pi, deb_po => enca_deb);  
-  encb_deb_enty: entity work.sync_deb port map(rst_pi => rst_pi, clk_pi => clk_pi, async_pi => encb_pi, deb_po => encb_deb);
-  butt_deb_enty: entity work.sync_deb port map(rst_pi => rst_pi, clk_pi => clk_pi, async_pi => mirr_pi, deb_po => butt_deb);
-
   -- entity to synchronize reset
   rst: entity work.rst_sync port map(rst_pi => rst_pi, clk_pi => clk_pi, rst_po => rst_loc);
+  
+  --- entity to synchronize inputs
+  enca_deb_enty: entity work.sync_deb   generic map ( CLK_FRQ => CLK_FRQ ) 
+                                        port map(rst_pi => rst_loc, clk_pi => clk_pi, async_pi => enca_pi, deb_po => enca_deb);
+  encb_deb_enty: entity work.sync_deb   generic map ( CLK_FRQ => CLK_FRQ )
+                                        port map(rst_pi => rst_loc, clk_pi => clk_pi, async_pi => encb_pi, deb_po => encb_deb);
+  butt_deb_enty: entity work.sync_deb   generic map ( CLK_FRQ => CLK_FRQ )
+                                        port map(rst_pi => rst_loc, clk_pi => clk_pi, async_pi => mirr_pi, deb_po => butt_deb);
   
   -- entity to decode encoder signals
   evt_dec: entity work.evt_decoder port map(    rst_pi => rst_loc, clk_pi => clk_pi, 
