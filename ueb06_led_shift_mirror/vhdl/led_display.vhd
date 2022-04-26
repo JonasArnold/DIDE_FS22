@@ -25,7 +25,7 @@ end led_display;
 
 architecture rtl of led_display is
 
-    signal shift : integer range -4 to 4 := 0;  -- shift value (positive = left shift, negative = right shift)
+    signal shift : integer range -5 to 5 := 0;  -- shift value (positive = left shift, negative = right shift)
     constant c_pattern : std_logic_vector(7 downto 0) := "00111100";
 
 begin
