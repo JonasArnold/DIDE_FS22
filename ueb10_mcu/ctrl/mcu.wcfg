@@ -11,15 +11,18 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="10813572fs"></ZoomStartTime>
-      <ZoomEndTime time="11037286fs"></ZoomEndTime>
-      <Cursor1Time time="11000000fs"></Cursor1Time>
+      <ZoomStartTime time="4979436fs"></ZoomStartTime>
+      <ZoomEndTime time="5092240fs"></ZoomEndTime>
+      <Cursor1Time time="5000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="244"></NameColumnWidth>
-      <ValueColumnWidth column_width="237"></ValueColumnWidth>
+      <ValueColumnWidth column_width="242"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="8" />
+   <WVObjectSize size="31" />
+   <wave_markers>
+      <marker time="5008000" label="" />
+   </wave_markers>
    <wvobject fp_name="/tb_mcu/rst" type="logic">
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
@@ -31,29 +34,240 @@
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider12">
-      <obj_property name="label">Bus</obj_property>
+      <obj_property name="label">CPU_CTRL</obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject type="divider" fp_name="divider12">
-      <obj_property name="label">RAM</obj_property>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_ctrl/c_st" type="other">
+      <obj_property name="ElementShortName">c_st</obj_property>
+      <obj_property name="ObjectShortName">c_st</obj_property>
+      <obj_property name="CustomSignalColor">#800080</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_ctrl/addr" type="array">
+      <obj_property name="ElementShortName">addr[9:0]</obj_property>
+      <obj_property name="ObjectShortName">addr[9:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_ctrl/data_in" type="array">
+      <obj_property name="ElementShortName">data_in[15:0]</obj_property>
+      <obj_property name="ObjectShortName">data_in[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_ctrl/wr_enb" type="logic">
+      <obj_property name="ElementShortName">wr_enb</obj_property>
+      <obj_property name="ObjectShortName">wr_enb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_ctrl/data_out" type="array">
+      <obj_property name="ElementShortName">data_out[15:0]</obj_property>
+      <obj_property name="ObjectShortName">data_out[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider18">
+      <obj_property name="label">CPU_PRC</obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_mcu/MUT/i_ram/bus_in" type="array">
-      <obj_property name="ElementShortName">bus_in</obj_property>
-      <obj_property name="ObjectShortName">bus_in</obj_property>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_prc/pc" type="array">
+      <obj_property name="ElementShortName">pc[9:0]</obj_property>
+      <obj_property name="ObjectShortName">pc[9:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_mcu/MUT/i_ram/bus_out" type="array">
-      <obj_property name="ElementShortName">bus_out</obj_property>
-      <obj_property name="ObjectShortName">bus_out</obj_property>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_prc/ctr_in.addr" type="array">
+      <obj_property name="ElementShortName">.addr[9:0]</obj_property>
+      <obj_property name="ObjectShortName">.addr[9:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_prc/ctr_in.mode" type="other">
+      <obj_property name="ElementShortName">.mode</obj_property>
+      <obj_property name="ObjectShortName">.mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_prc/ctr_in.enb" type="logic">
+      <obj_property name="ElementShortName">.enb</obj_property>
+      <obj_property name="ObjectShortName">.enb</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider23">
       <obj_property name="label">CPU_REG</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/reg_in.data" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">.data[15:0]</obj_property>
+      <obj_property name="ObjectShortName">.data[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="label">.data_in[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/reg_in.src1" type="array">
+      <obj_property name="ElementShortName">.src1[2:0]</obj_property>
+      <obj_property name="ObjectShortName">.src1[2:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/reg_in.src2" type="array">
+      <obj_property name="ElementShortName">.src2[2:0]</obj_property>
+      <obj_property name="ObjectShortName">.src2[2:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/reg_in.dest" type="array">
+      <obj_property name="ElementShortName">.dest[2:0]</obj_property>
+      <obj_property name="ObjectShortName">.dest[2:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/reg_in.enb_res" type="logic">
+      <obj_property name="ElementShortName">.enb_res</obj_property>
+      <obj_property name="ObjectShortName">.enb_res</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/reg_blk" type="array">
       <obj_property name="ElementShortName">reg_blk[0:7][15:0]</obj_property>
       <obj_property name="ObjectShortName">reg_blk[0:7][15:0]</obj_property>
       <obj_property name="CustomSignalColor">#FFD700</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/reg_out.data" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">.data[15:0]</obj_property>
+      <obj_property name="ObjectShortName">.data[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="label">.data_out[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider30">
+      <obj_property name="label">CPU_ALU</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_alu/alu_in.enb" type="logic">
+      <obj_property name="ElementShortName">.enb</obj_property>
+      <obj_property name="ObjectShortName">.enb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_alu/alu_out.flag" type="array">
+      <obj_property name="ElementShortName">.flag[0:3]</obj_property>
+      <obj_property name="ObjectShortName">.flag[0:3]</obj_property>
+      <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_alu/alu_out.flag[0]" type="logic">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">[0]</obj_property>
+         <obj_property name="label">Z</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_alu/alu_out.flag[1]" type="logic">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[1]</obj_property>
+         <obj_property name="ObjectShortName">[1]</obj_property>
+         <obj_property name="label">N</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_alu/alu_out.flag[2]" type="logic">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[2]</obj_property>
+         <obj_property name="ObjectShortName">[2]</obj_property>
+         <obj_property name="label">C</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_alu/alu_out.flag[3]" type="logic">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[3]</obj_property>
+         <obj_property name="ObjectShortName">[3]</obj_property>
+         <obj_property name="label">O</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_alu/alu_out.flag[0]" type="logic">
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">[0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_alu/alu_out.flag[1]" type="logic">
+         <obj_property name="ElementShortName">[1]</obj_property>
+         <obj_property name="ObjectShortName">[1]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_alu/alu_out.flag[2]" type="logic">
+         <obj_property name="ElementShortName">[2]</obj_property>
+         <obj_property name="ObjectShortName">[2]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_alu/alu_out.flag[3]" type="logic">
+         <obj_property name="ElementShortName">[3]</obj_property>
+         <obj_property name="ObjectShortName">[3]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider381">
+      <obj_property name="label">GPIO</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="vbus43" type="vbus">
+      <obj_property name="label">BTN_3:1</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="CustomSignalColor">#F0E68C</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <wvobject fp_name="/tb_mcu/MUT/gpio_0[7]" type="logic">
+         <obj_property name="ElementShortName">[7]</obj_property>
+         <obj_property name="ObjectShortName">[7]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/gpio_0[6]" type="logic">
+         <obj_property name="ElementShortName">[6]</obj_property>
+         <obj_property name="ObjectShortName">[6]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/gpio_0[5]" type="logic">
+         <obj_property name="ElementShortName">[5]</obj_property>
+         <obj_property name="ObjectShortName">[5]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="vbus55" type="vbus">
+      <obj_property name="label">LED_BGR</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="CustomSignalColor">#F0E68C</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <wvobject fp_name="/tb_mcu/MUT/gpio_1[7]" type="logic">
+         <obj_property name="ElementShortName">[7]</obj_property>
+         <obj_property name="ObjectShortName">[7]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/gpio_1[6]" type="logic">
+         <obj_property name="ElementShortName">[6]</obj_property>
+         <obj_property name="ObjectShortName">[6]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/gpio_1[5]" type="logic">
+         <obj_property name="ElementShortName">[5]</obj_property>
+         <obj_property name="ObjectShortName">[5]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/gpio_0[3]" type="logic">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">[3]</obj_property>
+      <obj_property name="ObjectShortName">[3]</obj_property>
+      <obj_property name="label">SW_3</obj_property>
+      <obj_property name="CustomSignalColor">#FFD700</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/gpio_1[0]" type="logic">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">[0]</obj_property>
+      <obj_property name="ObjectShortName">[0]</obj_property>
+      <obj_property name="label">LED_0</obj_property>
+      <obj_property name="CustomSignalColor">#FFD700</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="vbus61" type="vbus">
+      <obj_property name="label">SW_2:0</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="CustomSignalColor">#FFA500</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <wvobject fp_name="/tb_mcu/MUT/gpio_0[2]" type="logic">
+         <obj_property name="ElementShortName">[2]</obj_property>
+         <obj_property name="ObjectShortName">[2]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/gpio_0[1]" type="logic">
+         <obj_property name="ElementShortName">[1]</obj_property>
+         <obj_property name="ObjectShortName">[1]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/gpio_0[0]" type="logic">
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">[0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="vbus65" type="vbus">
+      <obj_property name="label">LED_3:1</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="CustomSignalColor">#FFA500</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <wvobject fp_name="/tb_mcu/MUT/gpio_1[3]" type="logic">
+         <obj_property name="ElementShortName">[3]</obj_property>
+         <obj_property name="ObjectShortName">[3]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/gpio_1[2]" type="logic">
+         <obj_property name="ElementShortName">[2]</obj_property>
+         <obj_property name="ObjectShortName">[2]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_mcu/MUT/gpio_1[1]" type="logic">
+         <obj_property name="ElementShortName">[1]</obj_property>
+         <obj_property name="ObjectShortName">[1]</obj_property>
+      </wvobject>
    </wvobject>
 </wave_config>

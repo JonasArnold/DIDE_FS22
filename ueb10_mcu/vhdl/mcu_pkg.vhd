@@ -41,7 +41,7 @@ package mcu_pkg is
   -- memory map
   type t_bus_slave is (ROM, RAM, GPIO, FMC, TIM, UART); -- list of bus slaves
   type t_ba is array (t_bus_slave) of std_logic_vector(AW-1 downto 0);
-  constant BA : t_ba := (             -- full base addresses !!!!!!!!!!!!!!!!!!!!! ToDo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+  constant BA : t_ba := (             -- full base addresses 
          ROM  => "0-" & "----" & "----",
          RAM  => "10" & "----" & "----",
          GPIO => "11" & "00--" & "----",

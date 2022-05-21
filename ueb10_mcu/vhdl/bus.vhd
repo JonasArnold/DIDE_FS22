@@ -11,6 +11,19 @@
 -- done combinationally. Thus, at the bus master interface, there results a
 -- read data latency of 1 cc.
 -------------------------------------------------------------------------------
+-- Note on code portability:
+-------------------------------------------------------------------------------
+-- The address decoding logic as implemented in process P_dec below, shows how
+-- to write portable code by means of a user-defined enumaration type which is
+-- used as the index range for a constant array, see mcu_pkg. This allows to
+-- leave the local code (in process P_dec) unchanged when the number and/or
+-- base addresses of the bus slaves in the system change. Such changes then
+-- need only to be made in the global definition package.
+-- To generate such portable code for the rest of the functionality (e.g. for
+-- the read data mux) would require to organize all data input vectors in a
+-- signal array first. This would destroy the portability of the code, since it
+-- requires manual code adaption when design parameter change. 
+-------------------------------------------------------------------------------
 -- Total # of FFs: 2
 -------------------------------------------------------------------------------
 library ieee;
@@ -42,7 +55,7 @@ end buss;
 architecture rtl of buss is 
 
   -- currently addressed bus slave
-  signal bus_slave : t_bus_slave;
+  signal bus_slave, bus_slave_reg : t_bus_slave;
   
 begin
 
@@ -60,7 +73,7 @@ begin
   P_dec: process(cpu_in)
    variable v_addr_match : boolean; 
   begin  
-    bus_slave <= t_bus_slave'left; -- default assignment
+    bus_slave <= ROM; -- default assignment
     for s in t_bus_slave loop
       -- over all slaves
       if std_match(cpu_in.addr(AW-1 downto AW-AWH), HBA(s)) then
@@ -78,7 +91,7 @@ begin
   gpio_out.data <= cpu_in.data;
   fmc_out.data  <= cpu_in.data;
   -- convey write enable from CPU to addressed slave only
-  ram_out.wr_enb  <= cpu_in.wr_enb when bus_slave = RAM else '0';
+  ram_out.wr_enb  <= cpu_in.wr_enb when bus_slave = RAM  else '0';
   gpio_out.wr_enb <= cpu_in.wr_enb when bus_slave = GPIO else '0';
   fmc_out.wr_enb  <= cpu_in.wr_enb when bus_slave = FMC else '0';
  
@@ -86,11 +99,11 @@ begin
   -- read transfer logic
   -----------------------------------------------------------------------------
   -- read data mux
---ToDo!!!  with ............. select cpu_out.data <= rom_in.data      when ROM,
---                                                   ram_in.data      when RAM,
---                                                   gpio_in.data     when GPIO,
---                                                   fmc_in.data      when FMC,
---                                                   (others => '-')  when others;
+  with bus_slave_reg select cpu_out.data <= rom_in.data      when ROM,
+                                            ram_in.data      when RAM,
+                                            gpio_in.data     when GPIO,
+                                            fmc_in.data      when FMC,
+                                            (others => '-')  when others;
   -- convey read enable from CPU to addressed slave only
   gpio_out.rd_enb <= cpu_in.rd_enb when bus_slave = GPIO else '0';
   fmc_out.rd_enb  <= cpu_in.rd_enb when bus_slave = FMC  else '0';
@@ -100,9 +113,9 @@ begin
   P_reg: process(rst, clk)
   begin
     if rst = '1' then
-       -- ToDo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       bus_slave_reg <= ROM;
     elsif rising_edge(clk) then
-       -- ToDo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       bus_slave_reg <= bus_slave;
     end if;
   end process;
   

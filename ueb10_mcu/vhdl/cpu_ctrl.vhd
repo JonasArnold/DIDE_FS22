@@ -1,8 +1,9 @@
 -------------------------------------------------------------------------------
--- Entity: cpu_ctrl
--- Author: Waj
+-- Entity : cpu_ctrl
+-- Author : Waj
+-- Project: Hand-Made MCU 
 -------------------------------------------------------------------------------
--- Description:
+-- Description: 
 -- Control unit without instruction pipelining for the RISC-CPU of the
 -- von-Neuman MCU.
 -------------------------------------------------------------------------------
@@ -41,10 +42,9 @@ architecture rtl of cpu_ctrl is
   signal instr_reg : std_logic_vector(DW-1 downto 0);
   signal instr_enb : std_logic;
   signal opcode    : natural range 0 to 2**OPCW-1;
-  -- write enable signals
-  signal reg_enb_res     : std_logic;
-  signal reg_enb_res_reg : std_logic;
-  signal reg_enb_data    : std_logic;
+  -- write enable signals to register block
+  signal reg_enb_res   : std_logic;
+  signal reg_enb_data  : std_logic;
   
 begin
 
@@ -52,21 +52,20 @@ begin
   -- Bus Interface
   -----------------------------------------------------------------------------
   data_out <= reg_in.data;
-
+  
   -----------------------------------------------------------------------------
   -- Register Block Interface
   -----------------------------------------------------------------------------
   P_rbi: process(clk)
   begin
     if rising_edge(clk) then
-      -- write enable/data registered once
+      -- write enable/data to register block for ld-instruction registered once
       reg_out.enb_data <= reg_enb_data;  
       reg_out.data     <= data_in;
-      -- write enable/result registered twice
-      reg_enb_res_reg  <= reg_enb_res;  
-      reg_out.enb_res  <= reg_enb_res_reg;  
     end if;
   end process;
+  -- combinational write enable to register block for ALU-results
+  reg_out.enb_res <= reg_enb_res;   
 
   -----------------------------------------------------------------------------
   -- Instruction register 
@@ -97,32 +96,31 @@ begin
   p_fsm_com: process (c_st, opcode, alu_in, reg_in, prc_in)
   begin
     -- default assignments for all outputs
-    n_st             <= c_st; -- remain in current state
-    rd_enb           <= '0';  
-    wr_enb           <= '0';  
-    instr_enb        <= '0';
-    reg_enb_res      <= '0';
-    reg_enb_data     <= '0';
-    alu_out.enb      <= '0';
-    prc_out.enb      <= '0';
-    prc_out.mode     <= linear;
-    addr             <= (others => '1');  -- reset vector
+    n_st          <= c_st; -- remain in current state
+    rd_enb        <= '0';  
+    wr_enb        <= '0';  
+    instr_enb     <= '0';
+    reg_enb_res   <= '0';
+    reg_enb_data  <= '0';  
+    alu_out.enb   <= '0';
+    prc_out.enb   <= '0';
+    prc_out.mode  <= linear;
+    addr          <= (others => '1');  -- reset vector
     -- specific assignments
     case c_st is
       when s_if =>
-        -- instruction fetch ----------------------------------
-        rd_enb <= '1';
+        -- instruction fetch -------------------------------
         if prc_in.exc = no_err then
           -- normal fetch if no exception, otherwise go to reset vector
           addr <= prc_in.pc;
         end if;
         n_st <= s_id;
       when s_id =>
-        -- instruction decode ---------------------------------
+        -- instruction decode ------------------------------
         instr_enb <= '1';
         n_st      <= s_ex;
       when s_ex =>
-        -- instruction execute --------------------------------
+        -- instruction execute -----------------------------
         if opcode <= 7 or (opcode >= 12 and opcode <= 15) then
           -- reg/reg-instruction, addil/h instruction, setil/h instruction
           -- increase PC, store result/flags from ALU, start next instr. cycle 

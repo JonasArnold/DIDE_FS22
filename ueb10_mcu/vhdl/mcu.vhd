@@ -95,7 +95,6 @@ begin
     );
 
   -- BUS ----------------------------------------------------------------------
-  
   i_bus: entity work.buss
     port map(
       rst      => rst_local,
@@ -111,7 +110,6 @@ begin
       fmc_in   => fmc2bus,
       fmc_out  => bus2fmc
     );
-
 
   -- ROM ----------------------------------------------------------------------
   i_rom: entity work.rom

@@ -23,9 +23,8 @@ end ram;
 
 architecture rtl of ram is
 
-  -- ToDo !!!!!!!!!!!!!!!!!!!!!!!!!!
-  -- type t_ram is array (0 to ........) of std_logic_vector(..... downto 0);
-  -- signal ram_array : t_ram;
+  type t_ram is array (0 to 2**AWRAM-1) of std_logic_vector(DW-1 downto 0);
+  signal ram_array : t_ram;
   
 begin
 
@@ -35,10 +34,10 @@ begin
   P_ram: process(clk)
   begin
     if rising_edge(clk) then
-    
-      -- ToDo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      -- bus_in.wr_enb, bus_in.addr, bus_in.data, bus_out.data
-      
+      if bus_in.wr_enb = '1' then
+        ram_array(to_integer(unsigned(bus_in.addr))) <= bus_in.data;
+      end if;
+      bus_out.data <= ram_array(to_integer(unsigned(bus_in.addr)));
     end if;
   end process;
   

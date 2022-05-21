@@ -30,10 +30,21 @@ architecture rtl of rom is
     ---------------------------------------------------------------------------
     -- Opcode    Rdest/D  Rsrc1/A  Rsrc2             description
     ---------------------------------------------------------------------------
+    OPC(setil)    & reg(0) & n2slv(16#00#, DW/2),    --setil r0,0x00
+    OPC(setih)    & reg(0) & n2slv(16#02#, DW/2),    --setih r0,0x02
+    OPC(setil)    & reg(1) & n2slv(16#FE#, DW/2),    --setil r1,0xFE
+    OPC(setih)    & reg(1) & n2slv(16#AF#, DW/2),    --setil r0,0xAF
+    OPC(st)       & reg(0) & reg(0) & "-----",       -- store to RAM
+    OPC(addil)    & reg(0) & n2slv(16#01#, DW/2),    --addil r0,0x01
+    OPC(setil)    & reg(2) & n2slv(16#0F#, DW/2),    --setil r0,0x0F
+    OPC(setih)    & reg(2) & n2slv(16#F5#, DW/2),    --setil r0,0xF5
+   
     OPC(st)    & reg(0) & reg(0) & "-----",          -- store to RAM
     OPC(st)    & reg(2) & reg(1) & "-----",          -- store to RAM
     OPC(ld)    & reg(3) & reg(0) & "-----",          -- load from RAM
     OPC(ld)    & reg(4) & reg(1) & "-----",          -- load from RAM
+    OPC(xori)  & reg(3) & reg(4) & reg(6)& "--",    -- apply bit mask     
+    
     ---------------------------------------------------------------------------
     others => iw_nop                                 -- NOP
          );
