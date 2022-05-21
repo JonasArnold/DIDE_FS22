@@ -96,7 +96,22 @@ begin
 
   -- BUS ----------------------------------------------------------------------
   
-  -- ToDo Instantiation !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  i_bus: entity work.buss
+    port map(
+      rst      => rst_local,
+      clk      => clk,
+      cpu_in   => cpu2bus,
+      cpu_out  => bus2cpu,
+      rom_in   => rom2bus,
+      rom_out  => bus2rom,
+      ram_in   => ram2bus,
+      ram_out  => bus2ram,
+      gpio_in  => gpio2bus,
+      gpio_out => bus2gpio,
+      fmc_in   => fmc2bus,
+      fmc_out  => bus2fmc
+    );
+
 
   -- ROM ----------------------------------------------------------------------
   i_rom: entity work.rom

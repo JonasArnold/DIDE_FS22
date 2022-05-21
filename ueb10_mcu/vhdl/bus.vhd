@@ -63,9 +63,9 @@ begin
     bus_slave <= t_bus_slave'left; -- default assignment
     for s in t_bus_slave loop
       -- over all slaves
---ToDo!!!      if std_match(...................) then
---ToDo!!!        bus_slave <= .............;
---             end if;
+      if std_match(cpu_in.addr(AW-1 downto AW-AWH), HBA(s)) then
+        bus_slave <= s;
+      end if;
     end loop;
   end process;
 
@@ -78,9 +78,9 @@ begin
   gpio_out.data <= cpu_in.data;
   fmc_out.data  <= cpu_in.data;
   -- convey write enable from CPU to addressed slave only
---ToDo!!!  ram_out.wr_enb  <= cpu_in.wr_enb...................;
---ToDo!!!  gpio_out.wr_enb <= cpu_in.wr_enb...................;
---ToDo!!!  fmc_out.wr_enb  <= cpu_in.wr_enb...................;
+  ram_out.wr_enb  <= cpu_in.wr_enb when bus_slave = RAM else '0';
+  gpio_out.wr_enb <= cpu_in.wr_enb when bus_slave = GPIO else '0';
+  fmc_out.wr_enb  <= cpu_in.wr_enb when bus_slave = FMC else '0';
  
   -----------------------------------------------------------------------------
   -- read transfer logic
