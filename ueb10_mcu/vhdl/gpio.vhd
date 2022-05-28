@@ -71,9 +71,18 @@ begin
   -----------------------------------------------------------------------------  
   P_dec: process(bus_in.addr)
   begin
-
-    addr_sel <= gpio_0_data_in; -- Dummy assignment !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+    case bus_in.addr is
+        -- Port 0
+        when c_addr_gpio_0_data_in      => addr_sel <= gpio_0_data_in;
+        when c_addr_gpio_0_data_out     => addr_sel <= gpio_0_data_out;
+        when c_addr_gpio_0_out_enb      => addr_sel <= gpio_0_out_enb;
+        -- Port 1
+        when c_addr_gpio_1_data_in      => addr_sel <= gpio_1_data_in;
+        when c_addr_gpio_1_data_out     => addr_sel <= gpio_1_data_out;
+        when c_addr_gpio_1_out_enb      => addr_sel <= gpio_1_out_enb;
+        when others => 
+            addr_sel <= none;
+    end case;
   end process;
 
   -----------------------------------------------------------------------------
@@ -82,9 +91,18 @@ begin
   P_read: process(clk)
   begin
     if rising_edge(clk) then
-
-      bus_out.data(c_gpio_port_ww-1 downto 0) <= data_in_0_reg; -- Dummy assignment !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+        case addr_sel is
+            -- Port 0
+            when gpio_0_data_in     => bus_out.data(c_gpio_port_ww-1 downto 0) <= data_in_0_reg;
+            when gpio_0_data_out    => bus_out.data(c_gpio_port_ww-1 downto 0) <= data_out_0_reg;
+            when gpio_0_out_enb     => bus_out.data(c_gpio_port_ww-1 downto 0) <= out_enb_0_reg;                       
+            -- Port 1
+            when gpio_1_data_in     => bus_out.data(c_gpio_port_ww-1 downto 0) <= data_in_1_reg;
+            when gpio_1_data_out    => bus_out.data(c_gpio_port_ww-1 downto 0) <= data_out_1_reg;
+            when gpio_1_out_enb     => bus_out.data(c_gpio_port_ww-1 downto 0) <= out_enb_1_reg; 
+                            
+            when others => null;
+        end case;
     end if;      
   end process;
 
@@ -99,12 +117,17 @@ begin
       data_out_1_reg <= (others => '0');
       out_enb_1_reg  <= (others => '0');  -- output disabled per default
     elsif rising_edge(clk) then
-
-      data_out_0_reg <= bus_in.data(c_gpio_port_ww-1 downto 0); -- Dummy assignment !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      out_enb_0_reg  <= bus_in.data(c_gpio_port_ww-1 downto 0); -- Dummy assignment !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      data_out_1_reg <= bus_in.data(c_gpio_port_ww-1 downto 0); -- Dummy assignment !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      out_enb_1_reg  <= bus_in.data(c_gpio_port_ww-1 downto 0); -- Dummy assignment !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+        if bus_in.wr_enb = '1' then  --  only write when wr_enb is true
+            case addr_sel is 
+                -- Port 0
+                when gpio_0_data_out    => data_out_0_reg <= bus_in.data(c_gpio_port_ww-1 downto 0);
+                when gpio_0_out_enb     => out_enb_0_reg  <= bus_in.data(c_gpio_port_ww-1 downto 0);   
+                -- Port 1
+                when gpio_1_data_out    => data_out_1_reg <= bus_in.data(c_gpio_port_ww-1 downto 0);
+                when gpio_1_out_enb     => out_enb_1_reg  <= bus_in.data(c_gpio_port_ww-1 downto 0);           
+                when others => null;
+            end case;
+        end if;
     end if;
   end process;
 
