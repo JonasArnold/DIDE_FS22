@@ -51,12 +51,18 @@ architecture rtl of rom is
     OPC(setil) & reg(4) & n2slv(16#01#, DW/2),         -- setil r4, 0x01 = Mask LED_0
     -- Main Loop --------------------------------------------------------------
     OPC(ld)    & reg(5) & reg(0) & "-----",            -- r5 := GPIO_0_DATA_IN
-    
-    --
-    --  ........... ToDo .............
-    --
-    
-    OPC(st)    & reg(7) & reg(1) & "-----",            -- GPIO_1_DATA_OUT := r7
+    OPC(andi)  & reg(7) & reg(5) & reg(2)& "--",       -- r7 := r5 & Mask LED_R/G/B     
+    OPC(slai)  & reg(5) & reg(5) & "-----",            -- r5 := r5 << 1    
+    OPC(andi)  & reg(6) & reg(5) & reg(3)& "--",       -- r6 := r5 & Mask LED_3/2/1     
+    OPC(ori)   & reg(7) & reg(7) & reg(6)& "--",       -- r7 := r7 | r6
+    OPC(srai)  & reg(5) & reg(5) & "-----",            -- r5 := r5 >> 1    
+    OPC(srai)  & reg(5) & reg(5) & "-----",            -- r5 := r5 >> 1    
+    OPC(srai)  & reg(5) & reg(5) & "-----",            -- r5 := r5 >> 1    
+    OPC(srai)  & reg(5) & reg(5) & "-----",            -- r5 := r5 >> 1   
+    OPC(xori)  & reg(5) & reg(4) & reg(5)& "--",       -- r5 := r5 xor Mask LED_0
+    OPC(andi)  & reg(5) & reg(4) & reg(5)& "--",       -- r5 := r5 and Mask LED_0
+    OPC(ori)   & reg(7) & reg(7) & reg(5)& "--",       -- r7 := r7 | r5
+    OPC(st)    & reg(7) & reg(1) & "-----",            -- GPIO_1_DATA_OUT = r7
     -- End Main Loop ----------------------------------------------------------
     OPC(jmp)   & "-"    & n2slv(16#0F#, AW),           -- jmp 0x00F (start of main loop)
     ---------------------------------------------------------------------------
