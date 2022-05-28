@@ -30,25 +30,39 @@ architecture rtl of rom is
     ---------------------------------------------------------------------------
     -- Opcode    Rdest/D  Rsrc1/A  Rsrc2             description
     ---------------------------------------------------------------------------
-    OPC(setil)    & reg(0) & n2slv(16#00#, DW/2),    --setil r0,0x00
-    OPC(setih)    & reg(0) & n2slv(16#02#, DW/2),    --setih r0,0x02
-    OPC(setil)    & reg(1) & n2slv(16#FE#, DW/2),    --setil r1,0xFE
-    OPC(setih)    & reg(1) & n2slv(16#AF#, DW/2),    --setil r0,0xAF
-    OPC(st)       & reg(0) & reg(0) & "-----",       -- store to RAM
-    OPC(addil)    & reg(0) & n2slv(16#01#, DW/2),    --addil r0,0x01
-    OPC(setil)    & reg(2) & n2slv(16#0F#, DW/2),    --setil r0,0x0F
-    OPC(setih)    & reg(2) & n2slv(16#F5#, DW/2),    --setil r0,0xF5
-   
-    OPC(st)    & reg(0) & reg(0) & "-----",          -- store to RAM
-    OPC(st)    & reg(2) & reg(1) & "-----",          -- store to RAM
-    OPC(ld)    & reg(3) & reg(0) & "-----",          -- load from RAM
-    OPC(ld)    & reg(4) & reg(1) & "-----",          -- load from RAM
-    OPC(xori)  & reg(3) & reg(4) & reg(6)& "--",    -- apply bit mask     
+    -- Init -------------------------------------------------------------------
+    -- set GPIO_0(7:0) = BTN(3:0) & SW(3:0) to Input (= HW default setting for all GPIO)
+    OPC(setil) & reg(0) & n2slv(16#02#, DW/2),         -- setil r0, 0x02
+    OPC(setih) & reg(0) & n2slv(16#03#, DW/2),         -- setih r0, 0x03
+    OPC(setil) & reg(1) & n2slv(16#00#, DW/2),         -- setil r1, 0x00
+    OPC(st)    & reg(1) & reg(0) & "-----",            -- GPIO_0_OUT_ENB = 0x00
+    -- set GPIO_1(7:5 & 3:0) = LED(B:G:R) & LED(3:0) to Output
+    OPC(setil) & reg(0) & n2slv(16#05#, DW/2),         -- setil r0, 0x05
+    OPC(setih) & reg(0) & n2slv(16#03#, DW/2),         -- setih r0, 0x03
+    OPC(setil) & reg(1) & n2slv(16#EF#, DW/2),         -- setil r1, 0xEF
+    OPC(st)    & reg(1) & reg(0) & "-----",            -- GPIO_1_OUT_ENB = 0xEF
+    -- prepare registers being used in main loop
+    OPC(setil) & reg(0) & n2slv(16#00#, DW/2),         -- setil r0, 0x00
+    OPC(setih) & reg(0) & n2slv(16#03#, DW/2),         -- setih r0, 0x03 = GPIO_0_DATA_IN
+    OPC(setil) & reg(1) & n2slv(16#04#, DW/2),         -- setil r1, 0x04
+    OPC(setih) & reg(1) & n2slv(16#03#, DW/2),         -- setih r1, 0x03 = GPIO_1_DATA_OUT
+    OPC(setil) & reg(2) & n2slv(16#E0#, DW/2),         -- setil r2, 0xEO = Mask LED_R/G/B
+    OPC(setil) & reg(3) & n2slv(16#0E#, DW/2),         -- setil r3, 0x0E = Mask LED_3/2/1
+    OPC(setil) & reg(4) & n2slv(16#01#, DW/2),         -- setil r4, 0x01 = Mask LED_0
+    -- Main Loop --------------------------------------------------------------
+    OPC(ld)    & reg(5) & reg(0) & "-----",            -- r5 := GPIO_0_DATA_IN
     
+    --
+    --  ........... ToDo .............
+    --
+    
+    OPC(st)    & reg(7) & reg(1) & "-----",            -- GPIO_1_DATA_OUT := r7
+    -- End Main Loop ----------------------------------------------------------
+    OPC(jmp)   & "-"    & n2slv(16#0F#, AW),           -- jmp 0x00F (start of main loop)
     ---------------------------------------------------------------------------
-    others => iw_nop                                 -- NOP
+    others => iw_nop                                   -- NOP
          );
-           
+                
 begin
 
   -----------------------------------------------------------------------------

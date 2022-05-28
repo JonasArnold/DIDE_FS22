@@ -44,6 +44,7 @@ architecture rtl of cpu_ctrl is
   signal opcode    : natural range 0 to 2**OPCW-1;
   -- write enable signals to register block
   signal reg_enb_res   : std_logic;
+  signal reg_enb_res_r : std_logic;
   signal reg_enb_data  : std_logic;
   
 begin
@@ -62,10 +63,11 @@ begin
       -- write enable/data to register block for ld-instruction registered once
       reg_out.enb_data <= reg_enb_data;  
       reg_out.data     <= data_in;
+      -- write enable to register block for ALU-results registered twice
+      reg_enb_res_r    <= reg_enb_res;   
+      reg_out.enb_res  <= reg_enb_res_r;   
     end if;
   end process;
-  -- combinational write enable to register block for ALU-results
-  reg_out.enb_res <= reg_enb_res;   
 
   -----------------------------------------------------------------------------
   -- Instruction register 
@@ -110,6 +112,7 @@ begin
     case c_st is
       when s_if =>
         -- instruction fetch -------------------------------
+        rd_enb <= '1';
         if prc_in.exc = no_err then
           -- normal fetch if no exception, otherwise go to reset vector
           addr <= prc_in.pc;
